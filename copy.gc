@@ -1,0 +1,25 @@
+package main
+
+import (
+	"fmt"
+	"net"
+)
+
+func main() {
+	// define the address and port to send the packet to
+	addr, _ := net.ResolveUDPAddr("udp", "116.203.129.151:9987")
+
+	fmt.Println(addr)
+	// create a connection to the address
+	conn, _ := net.DialUDP("udp", nil, addr)
+	fmt.Println(conn)
+
+	// send the packet with a string
+	written, _ := conn.Write([]byte("Hello, World!"))
+	fmt.Println("Written:", written)
+
+	// listen for a reply
+	var buffer [1024]byte
+	n, _, _ := conn.ReadFromUDP(buffer[:])
+	fmt.Println("Reply:", string(buffer[:n]))
+}
